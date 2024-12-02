@@ -1034,23 +1034,23 @@ def check_safe(report):
         return True
     elif all(-3 <= num <= -1 for num in report_diff_list):
         return True
-    elif len(report) == 6:
-        min = 6
-        for x in range(len(report_diff_list)):
-            if report_diff_list[x] not in [1, 2, 3]:
-                if x < min:
-                    min = x
-        for x in range(len(report_diff_list)):
-            if report_diff_list[x] not in [-1, -2, -3]:
-                if x < min:
-                    min = x
-        report.pop(min - 1)
-        check_safe(report)
     else:
         return False
 
+
 for report in report_list:
+    versions = []
+    safe = False
+    for i in range(len(report)):
+        new_version = report[:i] + report[i+1:]
+        versions.append(new_version)
     if check_safe(report):
-        damp_safe_no +=1
+        safe = True
+    else:
+        for version in versions:
+            if check_safe(version):
+                safe = True
+    if safe:
+        damp_safe_no += 1
 
 print(f"There are {damp_safe_no} safe reports after using the Dampener")
