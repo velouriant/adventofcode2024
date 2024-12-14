@@ -1390,12 +1390,13 @@ def check_rules(page):
     for rule in input_rules_list:
         if rule[0] in page and rule[1] in page:
             if page.index(rule[0]) > page.index(rule[1]):
-                return False
-    return True
+                return False, page.index(rule[0]), page.index(rule[1])
+    return True, -1, -1
 
 
 for page in input_pages_list:
-    if check_rules(page):
+    correct, index1, index2 = check_rules(page)
+    if correct:
         correct_mid_no_total += int(page[len(page) // 2])
     else:
         incorrect_pages.append(page)
@@ -1404,3 +1405,14 @@ print(f"The total of the middle page numbers for printed pages is {correct_mid_n
 
 # Part 2
 
+fixed_mid_no_total = 0
+
+for page in incorrect_pages:
+    correct = False
+    while not correct:
+        correct, index1, index2 = check_rules(page)
+        moving_no = page.pop(index2)
+        page.insert(index1, moving_no)
+    fixed_mid_no_total += int(page[len(page) // 2])
+
+print(f"The total of the middle page numbers for fixed pages is {fixed_mid_no_total}")
