@@ -115,6 +115,7 @@ def node_check2(i, j, symbol):
     return
 
 
+
 for i in range(len(coords)):
     for j in range(len(coords[0])):
         if coords[i][j] != ".":
